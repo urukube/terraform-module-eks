@@ -75,13 +75,13 @@ The following GitHub Secrets are required for the CI to function:
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.15.0, <= 6.31.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.42.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.15.0, <= 6.31.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.42.0 |
 
 ## Modules
 
