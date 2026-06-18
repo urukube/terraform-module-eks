@@ -1,6 +1,6 @@
 name: "eks-ci"
 
-on:
+"on":
   push:
   pull_request:
 
