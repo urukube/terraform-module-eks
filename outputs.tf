@@ -15,8 +15,7 @@ output "cluster_endpoint" {
 
 output "cluster_asg_names" {
   description = "List of Auto Scaling Group names for the cluster nodes"
-  # value       = module.eks.cluster_asg
-  value = []
+  value       = [for ng in module.eks.self_managed_node_groups : ng.autoscaling_group_name]
 }
 
 output "cluster_primary_security_group_id" {
