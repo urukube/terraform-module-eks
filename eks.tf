@@ -4,7 +4,7 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 21.0"
 
-  name               = "${var.friendly_name}-${var.bu_id}-${var.app_id}-eks"
+  name               = "${var.friendly_name}-eks"
   kubernetes_version = var.cluster_kubernetes_version
   enabled_log_types  = var.cluster_enabled_log_types
   # checkov:skip=CKV_TF_1:Using version tags for modules
@@ -44,7 +44,7 @@ module "eks" {
   self_managed_node_groups = var.is_eks_managed_node_group ? null : {
     default = {
       # The node group name gets appended with "-node-group" suffix
-      name     = "${var.friendly_name}-${var.bu_id}-${var.app_id}-sm"
+      name     = "${var.friendly_name}-sm"
       ami_type = var.ami_type
 
       launch_template_id      = aws_launch_template.template.id
@@ -52,7 +52,7 @@ module "eks" {
 
       autoscaling_group_tags = {
         "k8s.io/cluster-autoscaler/enabled"                                             = "true"
-        "k8s.io/cluster-autoscaler/${var.friendly_name}-${var.bu_id}-${var.app_id}-eks" = "owned"
+        "k8s.io/cluster-autoscaler/${var.friendly_name}-eks" = "owned"
       }
 
       iam_role_additional_policies = {

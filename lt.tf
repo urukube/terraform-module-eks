@@ -1,5 +1,5 @@
 resource "aws_launch_template" "template" {
-  name_prefix            = "${var.bu_id}-${var.app_id}-lt-"
+  name_prefix            = "${var.friendly_name}-lt-"
   image_id               = data.aws_ami.eks.id
   instance_type          = var.node_instance_type
   update_default_version = true
