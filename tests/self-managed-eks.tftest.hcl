@@ -22,7 +22,7 @@ run "plan" {
   }
 
   assert {
-    condition     = module.eks.cluster_name == "root-test-bu-test-app-eks"
+    condition     = module.eks.cluster_name == "root-eks"
     error_message = "Cluster name did not match expected value"
   }
 
