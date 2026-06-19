@@ -1,73 +1,70 @@
+# terraform-module-eks
+
+Terraform module that provisions an EKS cluster for the urukube IDP. Used by `terraform-module-eks-setup` to create the Orchestrator and per-BU workload clusters.
+
 ## Usage
 
 ```hcl
 module "eks" {
-  source = "github.com/orbitcluster/oc-terraform-module-eks"
+  source = "git::https://github.com/urukube/terraform-module-eks.git?ref=v1.0.0"
 
-  cluster_name = "example-cluster"
-  env          = "dev"
-  vpc_id = "vpc-12345678"
-  bu_id  = "oc"
-  app_id = "eks"
+  friendly_name              = "allhub"
+  bu_id                      = "BU001"
+  app_id                     = "APP001"
+  env                        = "dev"
+  cluster_kubernetes_version = "1.33"
 
-  private_subnet_ids = ["subnet-12345678", "subnet-87654321"]
+  vpc_id                           = module.networking.vpc_id
+  cluster_control_plane_subnet_ids = module.networking.eks_node_subnet_ids
+  private_subnet_ids               = module.networking.eks_node_subnet_ids
+  private_subnet_cidrs             = module.networking.eks_node_subnet_cidrs
+  node_security_group_id           = module.networking.node_security_group_id
+  control_plane_security_group_id  = module.networking.control_plane_security_group_id
 
-  extra_nodegroups = {
-    "example-ng" = "t3.medium"
-  }
+  ami_type           = "AL2023_x86_64_STANDARD"
+  node_instance_type = "t3.medium"
+  min_size           = 2
+  max_size           = 3
+  desired_size       = 2
+
+  is_eks_managed_node_group = false
 }
+```
+
+## Node Group Types
+
+| Variable | Value | Behaviour |
+|---|---|---|
+| `is_eks_managed_node_group` | `false` (default) | Self-managed node group with dedicated launch template — EBS encryption, IMDSv2, CloudWatch monitoring, no public IP |
+| `is_eks_managed_node_group` | `true` | EKS managed node group — **not yet implemented** (TODO) |
 
 ## Development
 
 ### Pre-commit Hooks
 
-This repository uses [pre-commit](https://pre-commit.com/) to ensure code quality and security.
-
-1.  **Install pre-commit**:
-    ```bash
-    pip install pre-commit
-    ```
-2.  **Install hooks**:
-    ```bash
-    pre-commit install
-    ```
-3.  **Run checks**:
-    ```bash
-    pre-commit run --all-files
-    ```
+```bash
+pip install pre-commit
+pre-commit install
+pre-commit run --all-files
+```
 
 ### Testing
 
-This module uses native Terraform testing (`terraform test`).
+```bash
+terraform test
+```
 
-To run tests locally:
-
-1.  Ensure you have AWS credentials configured.
-2.  Run the tests:
-    ```bash
-    terraform test
-    ```
+Requires AWS credentials configured in the environment.
 
 ## CI/CD
 
-This repository uses GitHub Actions for automated testing and release management.
+CI runs on every branch push and pull request (`eks-ci` workflow). Release is triggered on CI success and uses `urukube/release-workflow` for semantic versioning.
 
-### Workflows
+### Required GitHub Secrets
 
-*   **CI**: Triggered on push to any branch and pull requests.
-    *   Runs `terraform validate`.
-    *   Runs `terraform test` (configuring AWS credentials via secrets).
-*   **Release**: Triggered on push to `main`.
-    *   Uses [Semantic Release](https://github.com/semantic-release/semantic-release) to analyze commit messages.
-    *   Automatically creates a new version tag and GitHub release.
-
-### Secrets
-
-The following GitHub Secrets are required for the CI to function:
-
-*   `OC_ACCESS_KEY_ID`: AWS Access Key ID.
-*   `OC_SECRET_ACCESS_KEY`: AWS Secret Access Key.
-*   `OC_ROLE_TO_ASSUME`: ARN of the IAM role to assume (e.g., `arn:aws:iam::ACCOUNT_ID:role/OrbitClusterEKSAdmin`).
+| Secret | Purpose |
+|---|---|
+| `OC_ROLE_TO_ASSUME` | ARN of the IAM role to assume via OIDC |
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
