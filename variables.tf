@@ -80,7 +80,7 @@ variable "cluster_endpoint_public_access_cidrs" {
 variable "cluster_kubernetes_version" {
   description = "Kubernetes <major>.<minor> version to use for the cluster"
   type        = string
-  default     = "1.30"
+  default     = "1.36"
 }
 
 variable "cluster_control_plane_subnet_ids" {
