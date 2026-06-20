@@ -44,7 +44,7 @@ module "eks" {
   self_managed_node_groups = var.is_eks_managed_node_group ? null : {
     default = {
       # The node group name gets appended with "-node-group" suffix
-      name     = "${var.friendly_name}-sm-worker-node"
+      name     = "${var.friendly_name}-sm-wn"
       ami_type = var.ami_type
 
       launch_template_id      = aws_launch_template.template.id
