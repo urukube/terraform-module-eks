@@ -40,6 +40,17 @@ module "eks" {
     []
   )
 
+  node_security_group_additional_rules = var.enable_istio ? {
+    istio_webhook_injection = {
+      description                   = "Cluster API to Istio webhook port 15017"
+      protocol                      = "tcp"
+      from_port                     = 15017
+      to_port                       = 15017
+      type                          = "ingress"
+      source_cluster_security_group = true
+    }
+  } : {}
+
   # TODO: add eks_managed_node_groups block for when is_eks_managed_node_group = true
   self_managed_node_groups = var.is_eks_managed_node_group ? null : {
     default = {

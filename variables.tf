@@ -190,3 +190,9 @@ variable "is_eks_managed_node_group" {
   type        = bool
   default     = false
 }
+
+variable "enable_istio" {
+  description = "Open port 15017 (Istio webhook injection) from the EKS control plane to worker nodes. Required when Istio is installed on the cluster."
+  type        = bool
+  default     = false
+}

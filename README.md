@@ -111,6 +111,7 @@ CI runs on every branch push and pull request (`eks-ci` workflow). Release is tr
 | <a name="input_cluster_kubernetes_version"></a> [cluster\_kubernetes\_version](#input\_cluster\_kubernetes\_version) | Kubernetes <major>.<minor> version to use for the cluster | `string` | `"1.36"` | no |
 | <a name="input_control_plane_security_group_id"></a> [control\_plane\_security\_group\_id](#input\_control\_plane\_security\_group\_id) | Security group ID from the networking module to attach to the EKS control plane (in addition to the default one) | `string` | `null` | no |
 | <a name="input_desired_size"></a> [desired\_size](#input\_desired\_size) | Desired number of nodes to use for the cluster nodes | `number` | `2` | no |
+| <a name="input_enable_istio"></a> [enable\_istio](#input\_enable\_istio) | Open port 15017 (Istio webhook injection) from the EKS control plane to worker nodes. Required when Istio is installed on the cluster. | `bool` | `false` | no |
 | <a name="input_env"></a> [env](#input\_env) | Environment to use for the cluster | `string` | n/a | yes |
 | <a name="input_friendly_name"></a> [friendly\_name](#input\_friendly\_name) | Friendly name for the cluster | `string` | `"root"` | no |
 | <a name="input_iam_role_permissions_boundary"></a> [iam\_role\_permissions\_boundary](#input\_iam\_role\_permissions\_boundary) | IAM role permissions boundary to use for the cluster | `string` | `null` | no |
